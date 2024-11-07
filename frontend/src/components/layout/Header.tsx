@@ -7,12 +7,12 @@ import { useStore } from "zustand";
 import {
   AppBar,
   Toolbar,
-  Box,
+  Stack,
   Button,
   Typography,
   useTheme,
 } from "@mui/material";
-import { DarkMode, LightMode } from "@mui/icons-material";
+import { DarkMode, LightMode, PowerSettingsNew } from "@mui/icons-material";
 
 function Header() {
   const { theme, toggleTheme, resetDefaultAppValues } = useStore(useAppStore);
@@ -23,38 +23,76 @@ function Header() {
   const handleLogout = () => {
     resetDefaultUserValues();
     resetDefaultAppValues();
-    sessionStorage.removeItem("token");
   };
 
   return (
     <AppBar
-      position="static"
       sx={{
         bgcolor: themeColors.header.backgroundColor,
         color: themeColors.header.color,
       }}
     >
-      <Toolbar>
+      <Toolbar> 
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           <Link to="/">Workout Tracker</Link>
         </Typography>
 
-        <Box gap={2} sx={{ display: "flex", alignItems: "center" }}>
+        <Stack direction="row" spacing={2} height={30}>
           {!isLoggedIn && (
-            <Button variant="contained">
-              <Link to="/auth">Log in</Link>
+            <Button variant="contained" component={Link} to="/auth">
+              Log in
             </Button>
           )}
           {isLoggedIn && (
             <>
-              <Typography component="div">{displayName}</Typography>
+              <Stack direction="row">
+                <div>♥</div>
+                <Typography
+                  component="div"
+                  sx={{ display: "flex", alignItems: "center" }}
+                >
+                  {displayName}
+                </Typography>
+              </Stack>
 
-              <Button variant="contained" onClick={handleLogout}>
-                Log out
+              <Button
+                variant="contained"
+                component={Link}
+                to={`${displayName}/profile`}
+                size="small"
+              >
+                Profile
               </Button>
 
-              <Button variant="contained">
-                <Link to={`${displayName}/settings`}>Settings</Link>
+              <Button
+                variant="contained"
+                component={Link}
+                to={`${displayName}/history`}
+                size="small"
+              >
+                History
+              </Button>
+
+              <Button
+                variant="contained"
+                component={Link}
+                to={`/workout`}
+                size="small"
+              >
+                Workout
+              </Button>
+
+              <Button
+                variant="contained"
+                component={Link}
+                to={`/exercises`}
+                size="small"
+              >
+                Exercises
+              </Button>
+
+              <Button variant="contained" onClick={handleLogout} size="small">
+                <PowerSettingsNew />
               </Button>
             </>
           )}
@@ -63,10 +101,11 @@ function Header() {
             onClick={() => {
               toggleTheme();
             }}
+            size="small"
           >
             {theme === "light" ? <DarkMode /> : <LightMode />}
           </Button>
-        </Box>
+        </Stack>
       </Toolbar>
     </AppBar>
   );

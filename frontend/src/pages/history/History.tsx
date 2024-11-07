@@ -1,9 +1,9 @@
 import { useUserStore } from "@/store/UserStore";
 import { useStore } from "zustand";
 
-const Settings = () => {
+const History = () => {
   const { displayName } = useStore(useUserStore);
-  return <>{displayName} ---- Settings</>;
+  return <>{displayName} ---- History</>;
 };
 
-export default Settings;
+export default History;

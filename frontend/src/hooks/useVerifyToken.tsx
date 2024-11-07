@@ -9,25 +9,20 @@ export const useVerifyToken = () => {
   const { setIsLoggedIn, setDisplayName } = useStore(useUserStore);
 
   useEffect(() => {
-    const token = sessionStorage.getItem("token");
-    if (token) {
-      verifyToken(token)
-        .then((data) => {
-          if (data.status) {
-            const { displayName, preferences } = data.user;
-            setIsLoggedIn(true);
-            setDisplayName(displayName);
-            setTheme(preferences.theme);
-            setLocale(preferences.locale);
-          } else {
-            sessionStorage.removeItem("token");
-          }
-        })
-        .catch((error) => {
-          console.error("Token verification failed:", error);
-        });
-    } else {
-      console.error("Token not found in session storage");
-    }
+    verifyToken()
+      .then((data) => {
+        if (data.status) {
+          const { displayName, preferences } = data.user;
+          setIsLoggedIn(true);
+          setDisplayName(displayName);
+          setTheme(preferences.theme);
+          setLocale(preferences.locale);
+        } else {
+          console.error("Token verification failed");
+        }
+      })
+      .catch((error) => {
+        console.error("Token verification failed:", error);
+      });
   }, [setTheme, setLocale, setIsLoggedIn, setDisplayName]);
 };
