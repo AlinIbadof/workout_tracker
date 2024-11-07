@@ -1,35 +1,39 @@
 import User from "../models/user.model";
 import dotenv from "dotenv";
 import { NextFunction, Request, Response } from "express";
-import jwt from "jsonwebtoken";
+import jwt, {JsonWebTokenError, JwtPayload } from "jsonwebtoken";
 
 dotenv.config();
 
 const userVerification = (req: Request, res: Response, next: NextFunction) => {
-  const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.json({ status: false });
+  const token = req.cookies.jwt;
+
+  if (!token) {
+    return res.json({status: false});
   }
-  const token = authHeader.split(" ")[1];
+
   jwt.verify(
     token,
     process.env.TOKEN_KEY || "",
-    async (err: jwt.JsonWebTokenError | null, data: any) => {
+    async (err: JsonWebTokenError | null, data: JwtPayload | string | undefined) => {
       if (err) {
         return res.json({ status: false });
-      } else {
-        const user = await User.findById(data.id);
+      } else if (data && typeof data !== "string") { 
+        const user = await User.findById(data.id); 
         if (user) {
           res.json({
             status: true,
             user: {
               displayName: user.username,
+              preferences: user.preferences,
             },
           });
           next();
         } else {
           return res.json({ status: false });
         }
+      } else {
+        return res.json({ status: false });
       }
     }
   );

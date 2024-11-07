@@ -18,15 +18,18 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
       return res.json({ message: "Incorrect username or pass" });
     }
 
-    const { username: displayName } = user;
+    const { username: displayName, preferences } = user;
     const token = createSecretToken(user._id);
 
-    res.status(201).json({
-      message: "User logged in successfully",
-      success: true,
-      token: token,
-      displayName: displayName,
-    });
+    res
+      .cookie("jwt", token, { httpOnly: true, secure: false, sameSite: 'lax'})
+      .status(200)
+      .json({
+        message: "User logged in successfully",
+        success: true,
+        displayName: displayName,
+        preferences: preferences,
+      });
     next();
   } catch (error) {
     console.error(error);
