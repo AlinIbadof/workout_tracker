@@ -6,17 +6,18 @@ import { verifyToken } from "@/utils/authUtils";
 
 export const useVerifyToken = () => {
   const { setTheme, setLocale } = useStore(useAppStore);
-  const { setIsLoggedIn, setDisplayName } = useStore(useUserStore);
+  const { setIsLoggedIn, setDisplayName, setAvatar } = useStore(useUserStore);
 
   useEffect(() => {
     verifyToken()
       .then((data) => {
         if (data.status) {
-          const { displayName, preferences } = data.user;
+          const { displayName, preferences, selectedAvatar } = data.user;
           setIsLoggedIn(true);
           setDisplayName(displayName);
           setTheme(preferences.theme);
           setLocale(preferences.locale);
+          setAvatar(selectedAvatar);
         } else {
           console.error("Token verification failed");
         }
@@ -24,5 +25,5 @@ export const useVerifyToken = () => {
       .catch((error) => {
         console.error("Token verification failed:", error);
       });
-  }, [setTheme, setLocale, setIsLoggedIn, setDisplayName]);
+  }, [setTheme, setLocale, setIsLoggedIn, setDisplayName, setAvatar]);
 };

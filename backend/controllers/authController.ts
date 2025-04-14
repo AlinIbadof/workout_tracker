@@ -18,7 +18,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
       return res.json({ message: "Incorrect username or pass" });
     }
 
-    const { username: displayName, preferences } = user;
+    const { username: displayName, preferences, selectedAvatar} = user;
     const token = createSecretToken(user._id);
 
     res
@@ -29,6 +29,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
         success: true,
         displayName: displayName,
         preferences: preferences,
+        avatar: selectedAvatar,
       });
     next();
   } catch (error) {

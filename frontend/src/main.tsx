@@ -17,7 +17,6 @@ import useWindowSize from "./hooks/useWindowSize";
 
 import LayoutMobile from "./components/layout/LayoutMobile";
 import { Workout } from "./pages/workout";
-import { Home } from "@mui/icons-material";
 import { Auth } from "./pages/auth";
 import { Landing } from "./pages/landing";
 import { Exercises } from "./pages/exercises";
@@ -33,7 +32,7 @@ const AppRouter = () => {
     {
       element: isMobile ? <LayoutMobile /> : <Layout />,
       children: [
-        { path: "/", element: isLoggedIn ? <Home /> : <Landing /> },
+        { path: "/", element: isLoggedIn ? <Workout /> : <Landing /> },
         {
           path: "/auth",
           element: !isLoggedIn ? <Auth /> : <Navigate to="/workout" />,

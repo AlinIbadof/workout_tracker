@@ -26,6 +26,7 @@ const userVerification = (req: Request, res: Response, next: NextFunction) => {
             user: {
               displayName: user.username,
               preferences: user.preferences,
+              selectedAvatar: user.selectedAvatar,
             },
           });
           next();

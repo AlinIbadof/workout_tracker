@@ -1,17 +1,17 @@
 import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
-import { Paper } from "@mui/material";
+import { Avatar, Paper } from "@mui/material";
 import {
   Add,
   FitnessCenter,
   History,
-  Person,
   Settings,
 } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useStore } from "zustand";
 import { useUserStore } from "@/store/UserStore";
+import { getSelectedAvatarUrl } from "@/utils/avatarUtils";
 
 type BottomNavRoutes =
   | "profile"
@@ -27,7 +27,7 @@ const BottomNav = () => {
   const { displayName } = useStore(useUserStore);
 
   useEffect(() => {
-    const path = location.pathname.startsWith("/user")
+    const path = location.pathname.startsWith("/" + displayName)
       ? location.pathname.split("/")[2]
       : location.pathname.split("/")[1];
 
@@ -36,7 +36,7 @@ const BottomNav = () => {
     ) {
       setValue(path as BottomNavRoutes);
     }
-  }, [location]);
+  }, [displayName, location]);
 
   return (
     <Paper
@@ -63,7 +63,12 @@ const BottomNav = () => {
       >
         <BottomNavigationAction
           label="Profile"
-          icon={<Person />}
+          icon={
+            <Avatar
+              sx={{ width: "20px", height: "20px" }}
+              src={getSelectedAvatarUrl()}
+            />
+          }
           value={"profile"}
         />
         <BottomNavigationAction

@@ -1,3 +1,4 @@
 import Profile from "./Profile";
+import AvatarSelection from "./AvatarSelection";
 
-export { Profile };
+export { AvatarSelection, Profile };
