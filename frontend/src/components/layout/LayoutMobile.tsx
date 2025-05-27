@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import { Box } from "@mui/material";
+import { Container } from "@mui/material";
 import { useStore } from "zustand";
 import { useAppStore } from "@/store/AppSettingsStore";
 import { useVerifyToken } from "@/hooks/useVerifyToken";
@@ -14,21 +14,24 @@ function LayoutMobile() {
   useVerifyToken();
 
   return (
-    <Box sx={{ height: "100vh", display: "flex", flexDirection: "column" }}>
+    <>
       <HeaderMobile />
-      <Box
-        component="main"
+      <Container
+        disableGutters
         sx={{
-          flex: 1,
           backgroundColor: theme === "light" ? "#fff" : "#121212",
           color: theme === "light" ? "#333" : "#ccc",
-          paddingTop: '60px',
+          paddingTop: "55px",
+          height: "100vh",
+          width: "100vw",
+          display: "flex",
+          flexDirection: "column",
         }}
       >
         <Outlet />
         {isLoggedIn && <BottomNav />}
-      </Box>
-    </Box>
+      </Container>
+    </>
   );
 }
 

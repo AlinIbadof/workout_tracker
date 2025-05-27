@@ -126,7 +126,7 @@ export const handleLogin = async (
 
     const data = await response.json();
 
-    console.log('data', data);
+    console.log("data", data);
 
     if (data.message === "User logged in successfully") {
       useAppStore.getState().setTheme(data?.preferences.theme || "light");
@@ -143,6 +143,28 @@ export const handleLogin = async (
     }
   } catch (error) {
     console.error("Error during login:", error);
+  }
+};
+
+export const handleLogout = async () => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_API_BASE_URL}/auth/logout`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        credentials: "include",
+      }
+    );
+
+    const data = await response.json();
+
+    console.log(data);
+  } catch (error) {
+    console.log(error);
   }
 };
 

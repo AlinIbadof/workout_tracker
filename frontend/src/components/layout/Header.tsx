@@ -13,6 +13,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { DarkMode, LightMode, PowerSettingsNew } from "@mui/icons-material";
+import { handleLogout } from '../../utils/authUtils';
 
 function Header() {
   const { theme, toggleTheme, resetDefaultAppValues } = useStore(useAppStore);
@@ -20,9 +21,10 @@ function Header() {
   const { isLoggedIn, displayName, resetDefaultUserValues } =
     useStore(useUserStore);
 
-  const handleLogout = () => {
+  const onClickLogout = () => {
     resetDefaultUserValues();
     resetDefaultAppValues();
+    handleLogout();
   };
 
   return (
@@ -91,7 +93,7 @@ function Header() {
                 Exercises
               </Button>
 
-              <Button variant="contained" onClick={handleLogout} size="small">
+              <Button variant="contained" onClick={onClickLogout} size="small">
                 <PowerSettingsNew />
               </Button>
             </>

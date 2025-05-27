@@ -18,11 +18,11 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
       return res.json({ message: "Incorrect username or pass" });
     }
 
-    const { username: displayName, preferences, selectedAvatar} = user;
+    const { username: displayName, preferences, selectedAvatar } = user;
     const token = createSecretToken(user._id);
 
     res
-      .cookie("jwt", token, { httpOnly: true, secure: false, sameSite: 'lax'})
+      .cookie("jwt", token, { httpOnly: true, secure: false, sameSite: "lax" })
       .status(200)
       .json({
         message: "User logged in successfully",
@@ -66,4 +66,16 @@ const register = async (req: Request, res: Response) => {
   }
 };
 
-export { login, register };
+const logout = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    res
+      .clearCookie("jwt")
+      .status(200)
+      .json({ message: "Successfully logged out!" });
+    res.redirect("/");
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export { login, logout, register };
